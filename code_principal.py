@@ -1,4 +1,5 @@
 import os
+import shutil
 import argparse
 from datetime import datetime, timedelta
 import pandas as pd
@@ -176,6 +177,21 @@ if __name__ == "__main__":
     input_dir = "datas_npy"
     output_dir = "datas_chunked_npy"
     path_out_quartiled_npy = "datas_quartiles_npy"
+
+    try:
+        shutil.rmtree(input_dir)
+    except FileNotFoundError:
+        pass
+
+    try:
+        shutil.rmtree(output_dir)
+    except FileNotFoundError:
+        pass
+
+    try:
+        shutil.rmtree(path_out_quartiled_npy)
+    except FileNotFoundError:
+        pass
 
     create_npy(path)
     create_chunked_npy(input_dir, output_dir, window_length=int(window))
