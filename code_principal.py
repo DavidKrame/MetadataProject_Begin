@@ -14,6 +14,12 @@ from scipy import stats
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset-name', default='TS1.csv',
                     help='Name of the dataset')
+parser.add_argument('--window-length', default=6,
+                    help='Name of the dataset')
+parser.add_argument('--lag', default=5,
+                    help='Desired delay')
+parser.add_argument('--horizon', default=1,
+                    help='Desired prediction time horizon')
 
 
 def create_npy(path, location_dir="datas_npy"):
@@ -163,15 +169,18 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     path = args.dataset_name
+    window = args.window_length
+    horizon = args.horizon
+    lag = args.lag
 
     input_dir = "datas_npy"
     output_dir = "datas_chunked_npy"
     path_out_quartiled_npy = "datas_quartiles_npy"
 
     create_npy(path)
-    create_chunked_npy(input_dir, output_dir, window_length=20)
+    create_chunked_npy(input_dir, output_dir, window_length=int(window))
 
-    saving_quartiled_datas(lag=17, horizon=3, path_in=output_dir,
+    saving_quartiled_datas(lag=int(lag), horizon=int(horizon), path_in=output_dir,
                            path_out=path_out_quartiled_npy)
 
     # Demonstration
