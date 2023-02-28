@@ -8,6 +8,9 @@ All these files are generated automatically
 This code is used by passing as parameters the **name of the CSV** file containing the time series data, the **window size**, the size of the desired prediction **horizon** and the size of the part to be converted into quartiles (**lag**).  
   
 __**Example : **__  
-We can type in terminal `python code_principal.py --dataset-name TS1.csv --window-length 10 --horizon 2 --lag 8`  
+We can type in terminal  
+```shell
+python code_principal.py --dataset-name TS1.csv --window-length 10 --horizon 2 --lag 8
+```  
   
 If the parameters are not provided, the default is the **TS3.csv** file, a window size of **6**, a lag of **5** (minimum value) and a horizon of **1**.
