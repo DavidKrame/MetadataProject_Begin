@@ -12,6 +12,7 @@ from tqdm import trange
 from pandas import read_csv, DataFrame
 from scipy import stats
 
+# The following code allows us to pass parameters directly when calling the file
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset-name', default='TS1.csv',
                     help='Name of the dataset')
@@ -24,6 +25,11 @@ parser.add_argument('--horizon', default=1,
 
 
 def create_npy(path, location_dir="datas_npy"):
+    """
+        This function allows us to rearrange the data of the file to be 
+        preprocessed and to keep them in a folder named here by 
+        default "datas_npy" (in the npy format)   
+    """
     data_frame = pd.read_csv(path, sep=";", index_col=0,
                              parse_dates=True, decimal=",")
 
@@ -46,6 +52,10 @@ def create_npy(path, location_dir="datas_npy"):
 
 
 def chunking_function(array, window_length: int):
+    """
+        This function allows us to initially slice the 
+        received data according to the specified window.
+    """
     chunks = []
     if window_length >= 6:
         pass
@@ -60,8 +70,12 @@ def chunking_function(array, window_length: int):
     return chunks
 
 
-def create_chunked_npy(path_in, path_out="datas_chunked_npy", window_length=4):
-
+def create_chunked_npy(path_in, path_out="datas_chunked_npy", window_length=6):
+    """
+        This function finally allows us to save the data already cut according 
+        to the specified window in the npy format, in a folder named 
+        "datas_chunked_npy" by default
+    """
     path_of_npy = path_in
 
     try:
@@ -82,6 +96,10 @@ def create_chunked_npy(path_in, path_out="datas_chunked_npy", window_length=4):
 
 
 def compute_quartile(order: int, one_dim_array):
+    """
+        This is the general function for calculating all quartiles, for the desired 
+        order (first quartile, second quartile or median or third quartile) 
+    """
     one_dim_array.sort()
     N = len(one_dim_array)
 
@@ -113,6 +131,10 @@ def compute_quartile(order: int, one_dim_array):
 
 
 def compute_all_quartiles(one_dim_ar):
+    """
+        This is the general function for calculating all quartiles in one step 
+        (minimum, first quartile, second quartile or median, third quartile and maximum) 
+    """
     one_dim_array = deepcopy(one_dim_ar)
     one_dim_array.sort()
 
@@ -130,6 +152,10 @@ def compute_all_quartiles(one_dim_ar):
 
 
 def saving_quartiled_datas(lag: int, horizon: int, path_in, path_out="datas_quartiles_npy"):
+    """
+        This function allows us to transform the sliced data into quartile data 
+        and save it in NPY format (see "datas_quartiles_npy" folder) for later use.
+    """
     assert (
         horizon >= 1), f"Horizon must be rather than 0. You provide {horizon}"
     assert (lag >= 5), f"Lag must be rather than 5. You provide {lag}"
@@ -161,9 +187,6 @@ def saving_quartiled_datas(lag: int, horizon: int, path_in, path_out="datas_quar
             final_location = os.path.join(path_out, f_name)
 
             np.save(final_location, data_out)
-
-
-# def global_function(path_datas, paths_npy, path_chunked_npy, path_out_chunked_npy, path_out_quartiled_npy=, window_len: int, lag: int, horizon: int)
 
 
 if __name__ == "__main__":
@@ -200,10 +223,17 @@ if __name__ == "__main__":
                            path_out=path_out_quartiled_npy)
 
     # Demonstration
-    dt = np.load("datas_chunked_npy\\VAL_1.npy")
+
+    """
+    The following allows us to list only the items as sliced and the items 
+    quartilised (just an example to prove it works)
+    """
+    print("\t DEMONSTRATION'S EXAMPLES\n")
+    name_of_first_file_chunks = os.listdir("datas_chunked_npy")[0]
+    dt = np.load(f"datas_chunked_npy\\{name_of_first_file_chunks}")
     print("\t 2 HEAD VALUES IN DATAS_CHUNKED")
     print(dt[:2])
-    print("\n")
     print("\t 2 HEAD VALUES IN DATAS_QUARTILED")
-    dt2 = np.load("datas_quartiles_npy\\VAL_1.npy")
+    name_of_first_file_quartiles = os.listdir("datas_quartiles_npy")[0]
+    dt2 = np.load(f"datas_quartiles_npy\\{name_of_first_file_quartiles}")
     print(dt2[:2])
