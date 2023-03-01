@@ -15,5 +15,6 @@ python code_principal.py --dataset-name TS1.csv --window-length 10 --horizon 2 -
   
 If the parameters are not provided, the default is the `TS1.csv` file, a window size of `6`, a lag of `5` (minimum value) and a horizon of `1`.
 
-## Dependencies
-The `requirements.txt` file lists all the dependencies that need to be installed to run this code (`code_principal.py`).
+## Dependencies et documentation
+The `requirements.txt` file lists all the dependencies that need to be installed to run this code (`code_principal.py`).  
+Also, you can read the guide document here called `Metadata config for Ensemble TL for TS forecasting.pdf`
