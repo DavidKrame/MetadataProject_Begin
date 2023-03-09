@@ -87,8 +87,11 @@ def create_chunked_npy(path_in, path_out="datas_chunked_npy", window_length=6):
         f = os.path.join(path_of_npy, filename)
         if os.path.isfile(f) and f.endswith("npy"):
             data = np.load(f)
-
-            f_name = f.split("\\")[-1]
+            # System-agnostic code (can run on windows or unix-like systems)
+            if "\\" in f:
+                f_name = f.split("\\")[-1]
+            elif "/" in f:
+                f_name = f.split("/")[-1]
             chunks = chunking_function(data, window_length)
             final_location = os.path.join(path_out, f_name)
 
@@ -181,7 +184,11 @@ def saving_quartiled_datas(lag: int, horizon: int, path_in, path_out="datas_quar
                 for x in out2:
                     out.append(x)
                 data_out.append(out)
-            f_name = f.split("\\")[-1]
+            # System-agnostic code (can run on windows or unix-like systems)
+            if "\\" in f:
+                f_name = f.split("\\")[-1]
+            elif "/" in f:
+                f_name = f.split("/")[-1]
             data_out = np.array(data_out)
 
             final_location = os.path.join(path_out, f_name)
@@ -230,10 +237,18 @@ if __name__ == "__main__":
     """
     print("\t DEMONSTRATION'S EXAMPLES\n")
     name_of_first_file_chunks = os.listdir("datas_chunked_npy")[0]
-    dt = np.load(f"datas_chunked_npy\\{name_of_first_file_chunks}")
+    # System-agnostic code (can run on windows or unix-like systems)
+    try:
+        dt = np.load(f"datas_chunked_npy\\{name_of_first_file_chunks}")
+    except FileNotFoundError:
+        dt = np.load(f"datas_chunked_npy/{name_of_first_file_chunks}")
     print("\t 2 HEAD VALUES IN DATAS_CHUNKED")
     print(dt[:2])
     print("\t 2 HEAD VALUES IN DATAS_QUARTILED")
     name_of_first_file_quartiles = os.listdir("datas_quartiles_npy")[0]
-    dt2 = np.load(f"datas_quartiles_npy\\{name_of_first_file_quartiles}")
+    # System-agnostic code (can run on windows or unix-like systems)
+    try:
+        dt2 = np.load(f"datas_quartiles_npy\\{name_of_first_file_quartiles}")
+    except FileNotFoundError:
+        dt2 = np.load(f"datas_quartiles_npy/{name_of_first_file_quartiles}")
     print(dt2[:2])
