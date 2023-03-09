@@ -15,5 +15,9 @@ python code_principal.py --dataset-name TS1.csv --window-length 10 --horizon 2 -
   
 If the parameters are not provided, the default is the `TS1.csv` file, a window size of `6`, a lag of `5` (minimum value) and a horizon of `1`.
 
-## Documentation
-You can read the guide document here called `Metadata conf for Ens TL for TS forecasting.pdf` for theoricals explanations.
+## Documentation and dependancies
+You can read the guide document here called `Metadata conf for Ens TL for TS forecasting.pdf` for theoricals explanations.  
+You may have probably to install some packages before, like `tqdm`, `numpy`, `datetime`, `argparse` and `pandas` if don't yet do. For that, you have to type this in your terminal :
+```shell
+pip install tqdm numpy datetime argparse pandas
+```
